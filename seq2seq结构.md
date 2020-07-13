@@ -1,18 +1,16 @@
-[TOC]
-
 
 
 ## **1. RNN（循环神经网络）**
 
 **神经网络**可以当做是能够拟合任意函数的黑盒子，只要训练数据足够，给定特定的x，就能得到希望的y，结构图如下：
 
-![image-20200713213245653](./pic/image-20200713213245653.png)
+![image-20200713213245653](./seq2seq结构.assets/image-20200713213245653.png)
 
 将神经网络模型训练好之后，在输入层给定一个x，通过网络之后就能够在输出层得到特定的y。
 
 ### **1.1 RNN结构：**
 
-![image-20200713213340028](./pic/image-20200713213340028.png)
+![image-20200713213340028](./seq2seq结构.assets/image-20200713213340028.png)
 
 ### **1.2 为什么需要RNN（循环神经网络）**
 
@@ -24,13 +22,13 @@
 
 Slot Filling：槽位填充，也是序列标注的一种。
 
-<img src="./pic/image-20200713213438582.png" alt="image-20200713213438582" style="zoom:80%;" />
+<img src="./seq2seq结构.assets/image-20200713213438582.png" alt="image-20200713213438582" style="zoom:80%;" />
 
-<img src="./pic/image-20200713213445528.png" alt="image-20200713213445528" style="zoom: 80%;" />
+<img src="./seq2seq结构.assets/image-20200713213445528.png" alt="image-20200713213445528" style="zoom: 80%;" />
 
-<img src="./pic/image-20200713213459048.png" alt="image-20200713213459048" style="zoom:67%;" />
+<img src="./seq2seq结构.assets/image-20200713213459048.png" alt="image-20200713213459048" style="zoom:67%;" />
 
-<img src="./pic/image-20200713213523235.png" alt="image-20200713213523235" style="zoom: 67%;" />
+<img src="./seq2seq结构.assets/image-20200713213523235.png" alt="image-20200713213523235" style="zoom: 67%;" />
 
 
 
@@ -42,13 +40,13 @@ seq2seq属于Encoder-Decoder结构的一种，基本思想就是利用两个RNN�
 
 Encoder负责将输入序列压缩成指定的长度的向量，这个向量可以看成是这个序列的语义，这个过程称作编码。获取语义向量最简单的方式就是直接将最后一个输入的隐状态作为语义向量C, 如下图所示：
 
-![1593769172741](./pic/Encoder.png)
+![1593769172741](./seq2seq结构.assets/Encoder.png)
 
 ### **2.2 Decoder：**
 
 Decoder负责根据语义向量生成指定的序列，这个过程称作解码，最简单的方式是将encoder得到的语义变量作为初始状态输入到decoder的RNN中，得到输出序列。可以看到上一时刻的输出会作为当前时刻的输入，而且其中语义向量C只作为初始状态参与运算，后面的运算都与语义向量C无关。如下图所示:
 
-![image-20200704203821098](./pic/Decoder.png)
+![image-20200704203821098](./seq2seq结构.assets/Decoder.png)
 
 ### **2.3 缺点：**
 
@@ -68,7 +66,7 @@ Attention机制跟人类翻译文章时候的思路有些类似，即将注意�
 
 
 
-![img](/pic/attention.webp)
+![img](/seq2seq结构.assets/attention.webp)
 
 
 
@@ -78,17 +76,17 @@ Attention机制跟人类翻译文章时候的思路有些类似，即将注意�
 
 2） 对于每个时间步的输出h与z0做匹配也就是match操作，得到每个时间步的匹配向量α10 ,如下图所示：
 
-![image-20200705132251793](./pic/attention-算法步骤1.png)
+![image-20200705132251793](./seq2seq结构.assets/attention-算法步骤1.png)
 
 3）对所有时间步的输出h与z0的匹配度α0，使用softmax做归一化处理，得到各个时间步对于z0的匹配分数
 
 4）求各个时间步的输出h与匹配分数的加权求和得到c0，作为Decoder的下一个时间步的输入，如下图所示：
 
-![image-20200705134125957](./pic/attention-算法步骤3.png)
+![image-20200705134125957](./seq2seq结构.assets/attention-算法步骤3.png)
 
 5）计算各个时间步的输出h与z1的匹配度得到c1作为Decoder下一个时间步的输入，如此一步步重复下去，如下图所示：
 
-![image-20200705134340466](./pic/attention-算法步骤2.png)
+![image-20200705134340466](./seq2seq结构.assets/attention-算法步骤2.png)
 
 ## **4. seq2seq with attention模型整个算法过程**
 
@@ -141,7 +139,7 @@ $$
 
 也就是说，s~i-1~先跟每个h分别计算得到一个数值，然后使用softmax得到i时刻的输出在T~x~个输入隐藏状态中的注意力分配向量。这个分配向量也就是计算c~i~的权重。上面这些公式就是解码器在第i个时间段内要做的事情，示意图如下：
 
-![image-20200705230428083](C:\Users\Lyb-PC\AppData\Roaming\Typora\typora-user-images\image-20200705230428083.png)
+![image-20200705230428083](./seq2seq结构.assets/image-20200705230428083.png)
 
 
 
